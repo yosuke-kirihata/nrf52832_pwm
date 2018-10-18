@@ -114,16 +114,6 @@ void pwm0_set_duty_cycle(uint32_t value)
 }
 
 
-// Utility function for providing sin values, and converting them to integers.
-// input values in the range [0 - input_max] will be converted to 0-360 degrees (0-2*PI).
-// output values will be scaled to the range [output_min - output_max].
-uint32_t sin_scaled(uint32_t input, uint32_t input_max, uint32_t output_min, uint32_t output_max)
-{
-    float sin_val = sinf((float)input * 2.0f * 3.141592f / (float)input_max);
-    return (uint32_t)(((sin_val + 1.0f) / 2.0f) * (float)(output_max - output_min)) + output_min; 
-}
-
-
 int main(void)
 {
     uint32_t counter = 0;
@@ -142,6 +132,8 @@ int main(void)
         nrf_delay_us(4000);
         
         // Update the duty cycle of PWM channel 0 and increment the counter.
-        pwm0_set_duty_cycle(sin_scaled(counter++, 200, 0, TIMER_RELOAD));
+        pwm0_set_duty_cycle(counter++);
+
+        counter %= TIMER_RELOAD;
     }
 }
