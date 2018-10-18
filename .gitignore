@@ -1,0 +1,3 @@
+## Segger Embedded Studio ##
+*.jlink
+**/ses/Output/
